@@ -1,10 +1,7 @@
 " Setup {{{1
-
-
-
 set nocompatible
 
-colorscheme eldar
+colorscheme night-owl
 syntax enable
 "hi Normal ctermbg=none
 "highlight NonText ctermbg=none
