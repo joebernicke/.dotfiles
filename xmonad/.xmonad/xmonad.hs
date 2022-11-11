@@ -126,9 +126,10 @@ myStartupHook = do
     spawnOnce "picom"
     spawnOnce "nm-applet"
     spawnOnce "volumeicon"
+    spawnOnce "blueberry-tray"
 
     spawn ("sleep 2 && conky -c $HOME/.config/conky/xmonad/" ++ colorScheme ++ "-01.conkyrc")
-    spawn ("sleep 3 && trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 " ++ colorTrayer ++ " --height 22")
+    spawn ("sleep 3 && exec trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 " ++ colorTrayer ++ " --height 22")
     spawnOnce "nitrogen --restore &" 
     setWMName "LG3D"
 --- }}}
@@ -294,7 +295,7 @@ myKeys c =
         [ ("M-C-r", addName "Recompile XMonad"       $ spawn "xmonad --recompile")
         , ("M-S-r", addName "Restart XMonad"         $ spawn "xmonad --restart")
         , ("M-S-q", addName "Quit XMonad"            $ sequence_ [io exitSuccess])
-        , ("M-S-c", addName "Kill focused window"    $ kill1)
+        , ("M-q", addName "Kill focused window"    $ kill1)
         , ("M-S-a", addName "Kill all windows on WS" $ killAll)
         , ("M-S-<Return>", addName "Run prompt"      $ sequence_ [spawn "/usr/bin/dmenu_run"])]
 

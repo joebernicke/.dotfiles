@@ -1,7 +1,7 @@
 " Setup {{{1
 set nocompatible
 
-colorscheme night-owl
+" colorscheme night-owl
 syntax enable
 "hi Normal ctermbg=none
 "highlight NonText ctermbg=none
@@ -59,7 +59,7 @@ set splitbelow
 set splitright
 set smartcase
 set smartindent
-set spelllang=eng
+"set spelllang=eng
 set tabstop=4
 set timeoutlen=600
 set ttyfast
@@ -74,16 +74,7 @@ set visualbell t_vb=".
 set linebreak
 set textwidth=0
 set display=lastline
-" GUI options {{{2
-" if has("gui_running")
-"     set guioptions-=T
-"     set guioptions-=r
-"     set guioptions-=R
-"     set guioptions-=m
-"     set guioptions-=l
-"     set guioptions-=L
-"     set guitablabel=%t
-" endif
+
 " Variables {{{2
 let g:python_host_prog  = '/usr/bin/python2'
 let g:python3_host_prog = '/usr/bin/python3'
@@ -92,19 +83,36 @@ let vim_markdown_preview_hotkey='<C-q>'
 " Plugin Options {{{1
 
 " vimtex {{{2
-" }}}1
+
 
 call plug#begin('~/.vim/plugged') "Vim plug
 
 Plug 'lervag/vimtex'
+Plug 'dylanaraps/wal'
+Plug 'sirver/ultisnips'
+    let g:UltiSnipsExpandTrigger = '<tab>'
+    let g:UltiSnipsJumpForwardTrigger = '<tab>'
+    let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+
+Plug 'lervag/vimtex'
+    let g:tex_flavor='latex'
+    let g:vimtex_view_method='zathura'
+    let g:vimtex_quickfix_mode=0
+
+Plug 'KeitaNakamura/tex-conceal.vim'
+    set conceallevel=1
+    let g:tex_conceal='abdmg'
+    hi Conceal ctermbg=none
+
+setlocal spell
+"set spelllang=en_us
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u]
 
 call plug#end()
 
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-set conceallevel=1
-let g:tex_conceal='abdmg'
+colorscheme wal
+set background=dark
+
 
 
 " vim-surround {{{2
@@ -140,7 +148,7 @@ let g:netrw_http_cmd = "qutebrowser"
 let g:netrw_browsex_viewer = "xdg-open"
 " Pandoc and Notes {{{2
 set cc=84
-hi ColorColumn ctermbg=darkgrey guibg=darkgrey
+"hi ColorColumn ctermbg=darkgrey guibg=darkgrey
 command! -nargs=1 Ngrep lvimgrep "<args>" $NOTES_DIR/**/*.txt
 nnoremap <leader>[ :Ngrep 
 
@@ -219,40 +227,6 @@ vnoremap <leader>d "_d
 vnoremap <leader>q <esc>:q!<cr>
 
 
-" Commands and Functions {{{1
-" Notes {{{2
-command! Archive  cd $NOTES_DIR | exe "sav Scratch/stash/" . strftime("%s") . ".md"
-" Pack {{{2
-command! PackUpdate echo system('find ~/.vim/pack/bundle/start/*/. -maxdepth 0 -execdir pwd \; -execdir git pull \;')
-command! PackList echo system('ls ~/.vim/pack/bundle/start')
-command! -nargs=1 PackInstall echo system('cd ~/.vim/pack/bundle/start && git clone git@github.com:<args>.git')
-command! -nargs=1 PackUninstall echo system('rm -rf ~/.vim/pack/bundle/start/<args>')
-" Ix {{{2
-command! -range=% Ix :<line1>,<line2>call Ix()
-fun! Ix() range
-    call setreg("+", system('ix', join(getline(a:firstline, a:lastline), "\n")))
-endfun
-" Tabularize {{{2
-vnoremap <leader>t j:call <SID>table()<cr>
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-fun! s:align()
-    let p = '^\s*|\s.*\s|\s*$'
-    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-        Tabularize/|/l1
-        normal! 0
-        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-    endif
-endfun
-fun! s:table() range
-    exe "'<,'>Tab /|"
-    let hsepline= substitute(getline("."),'[^|]','-','g')
-    exe "norm! o" .  hsepline
-    exe "'<,'>s/-|/ |/g"
-    exe "'<,'>s/|-/| /g"
-    exe "'<,'>s/^| \\|\\s*|$\\||//g"
-endfun
 " Symbol Shortcuts {{{1
 " Greek {{{2
 map! <C-v>GA Γ
@@ -328,12 +302,7 @@ inoremap <leader>=2 ^2+^
 inoremap <leader>=3 ^3+^
 inoremap <leader>-- ^-^
 inoremap <leader>-2 ^2-^
-inoremap <leader>-3 ^3-^
 
-" Subscript and Superscript {{{2
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-" }}} vim: fdm=marker
 
 
 

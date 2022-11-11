@@ -15,7 +15,8 @@ export PROMPT_COMMAND=__prompt_command
 __prompt_command() {
    code=$?
    [[ $code != 0 ]] && echo -e "$RED✗ ${code}${RESET_COLOR}"
-   PS1="($CONDA_DEFAULT_ENV) $(ps1_hostname)\[\e[1;37m\]\W\[\e[1;31m\]:\[\e[0m\] "
+   #PS1="($CONDA_DEFAULT_ENV) $(ps1_hostname)\[\e[1;37m\]\W\[\e[1;31m\]:\[\e[0m\] "
+   PS1="($CONDA_DEFAULT_ENV) $()\[\e[1;37m\]\W\[\e[1;31m\]:\[\e[0m\] "
 }
 
 
@@ -78,5 +79,8 @@ pacsize() {
       awk 'BEGIN{sort="sort -k2 -n"} /Name/ {name=$3} /Size/ {size=$4/1024;print name":",size,"Mb"|sort}' | \
       less
 }
+
+cat /home/joe/.cache/wal/sequences
+source ~/.cache/wal/colors-tty.sh
 
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
