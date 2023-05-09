@@ -65,7 +65,7 @@ if [ -n "$file" ]; then
 fi
 }
 cd_with_fzf() {
-cd "$(fd -t -H d | fzf --preview="tree -L -H 1 {}" --bind="space:toggle-preview" --preview-window=:hidden)" && clear
+cd "$(fd -t d | fzf --preview="tree -L -H 1 {}" --bind="space:toggle-preview" --preview-window=:hidden)" && clear
 }
 pacs() {
 sudo pacman -Syy $(pacman -Ssq | fzf -m --preview="pacman -Si {}" --preview-window=:hidden --bind=space:toggle-preview)

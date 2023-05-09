@@ -88,6 +88,8 @@ let vim_markdown_preview_hotkey='<C-q>'
 call plug#begin('~/.vim/plugged') "Vim plug
 
 Plug 'lervag/vimtex'
+Plug 'junegunn/fzf.vim'
+Plug 'jpalardy/vim-slime'
 Plug 'dylanaraps/wal'
 Plug 'sirver/ultisnips'
     let g:UltiSnipsExpandTrigger = '<tab>'
@@ -102,7 +104,6 @@ Plug 'lervag/vimtex'
 Plug 'KeitaNakamura/tex-conceal.vim'
     set conceallevel=1
     let g:tex_conceal='abdmg'
-    hi Conceal ctermbg=none
 
 setlocal spell
 "set spelllang=en_us
@@ -112,6 +113,7 @@ call plug#end()
 
 colorscheme wal
 set background=dark
+hi Conceal ctermbg=none
 
 
 

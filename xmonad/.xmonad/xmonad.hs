@@ -42,7 +42,8 @@ import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
 import XMonad.Layout.WindowNavigation
 import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
-   
+
+import XMonad.Layout.NoFrillsDecoration
 -- Data
 import Data.Char (isSpace, toUpper)
 import Data.Maybe (fromJust)
@@ -172,6 +173,25 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 mySpacing' :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 
+base03  = "#002b36"
+blue    = "#268bd2"
+active      = blue
+topbar      = 2
+red     = "#dc322f"
+yellow  = "#b58900"
+topBarTheme = def
+    {inactiveBorderColor   = base03
+    , inactiveColor         = base03
+    , inactiveTextColor     = base03
+    , activeBorderColor     = active
+    , activeColor           = active
+    , activeTextColor       = active
+    , urgentBorderColor     = red
+    , urgentTextColor       = yellow
+    , decoHeight            = topbar
+    }
+
+
 tall     = renamed [Replace "tall"]
          $ limitWindows 5
          $ smartBorders
@@ -216,11 +236,16 @@ myShowWNameTheme = def
 -- The layout hook
 myLayoutHook = avoidStruts
                $ mouseResize
+               $ addTopBar
                $ windowArrange
                $ T.toggleLayouts floats
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
+               -- $ myDefaultLayout
+               
     where
-        myDefaultLayout = withBorder myBorderWidth tall
+        addTopBar           = noFrillsDeco shrinkText topBarTheme
+        -- myDefaultLayout = withBorder myBorderWidth tall
+        myDefaultLayout = tall
             ||| noBorders monocle
             ||| floats
             ||| noBorders tabs
@@ -381,6 +406,7 @@ myKeys c =
        
        -- Sublayouts
        -- This is used to push windows to tabbed sublayouts, or pull them out of it.
+
        ^++^ subKeys "Sublayouts"
        [ ("M-C-h", addName "pullGroup L"           $ sendMessage $ pullGroup L)
        , ("M-C-l", addName "pullGroup R"           $ sendMessage $ pullGroup R)
