@@ -1,2 +1,1 @@
-require("joe")
-require("joe.remap")
+require("config.lazy")
