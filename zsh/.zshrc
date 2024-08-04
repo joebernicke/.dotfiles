@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="simple"
+ZSH_THEME="awesomepanda"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -105,3 +105,22 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH="$PATH:/opt/nvim-linux64/bin"
+export PATH="$PATH:/home/joe/.local/bin"
+
+# Functions {{{1
+function open_with_fzf {
+file="$(fdfind -t f -H | fzf)"
+if [ -n "$file" ]; then
+	nvim "$file"
+fi
+}
+function cd_with_fzf {
+cd "$(fdfind -t d -H | fzf)" && clear 
+}
+zle -N open_with_fzf{,}
+zle -N cd_with_fzf{,}
+
+bindkey '\C-o' cd_with_fzf
+bindkey '\C-l' open_with_fzf
+bindkey -s ^f "tmux-sessionizer\n"
+
